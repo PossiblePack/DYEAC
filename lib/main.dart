@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:my_seniorproject/data/MainWidget.dart';
 import 'package:my_seniorproject/data/Patient.dart';
 import 'package:my_seniorproject/data/NavBar.dart';
 import 'package:my_seniorproject/page/Patient_detail.dart';
@@ -37,44 +38,38 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavBar(),
-      appBar: AppBar(
-        title: Text(
-          'รายชื่อผู้ป่วยในการดูแล',
-          style: TextStyle(fontSize: 20),
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.notifications_none_rounded),
-            onPressed: () {/* Write listener code here */},
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-          ),
-        ],
-        backgroundColor: Colors.pink,
-      ),
+      // drawer: NavBar(),
+      // appBar: AppBar(
+      //   title: Text(
+      //     'รายชื่อผู้ป่วยในการดูแล',
+      //     style: TextStyle(fontSize: 20),
+      //   ),
+      //   actions: <Widget>[
+      //     IconButton(
+      //       icon: Icon(Icons.notifications_none_rounded),
+      //       onPressed: () {/* Write listener code here */},
+      //     ),
+      //     Padding(
+      //       padding: EdgeInsets.symmetric(horizontal: 5),
+      //     ),
+      //     Padding(
+      //       padding: EdgeInsets.symmetric(horizontal: 5),
+      //     ),
+      //   ],
+      //   backgroundColor: Colors.pink,
+      // ),
       body: Container(
-          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+          margin: const EdgeInsets.symmetric(horizontal: 20),
+          height: 300,
+          width: double.maxFinite,
+          alignment: Alignment.center,
           child: ListView(
             children: [
-              Patient("นาย ก กกขค", " 12:30 น. "),
-              Patient("นาย ข หกดหกด", " 17:30 น. "),
-              Patient("นาย หกดเฟกห ฟหด", " 17:30 น. "),
-              Patient("นาย ฟหก ฟหเหกเ", " 18:30 น. "),
-              Patient("นาย ก กกขค", " 19:30 น. "),
-              Patient("นาย ก กกขค", " 12:30 น. "),
-              Patient("นาย ก กกขค", " 17:30 น. "),
-              Patient("นาย ก กกขค", " 17:30 น. "),
-              Patient("นาย ก กกขค", " 18:30 น. "),
-              Patient("นาย ก กกขค", " 19:30 น. "),
-              Patient("นาย ก กกขค", " 12:30 น. "),
+              // Patient("สวัสดั", " 12:30 น. "),
+              MainWidget("สมชาย สมหวังดังประสงค์", "18:00", "30")
             ],
           )),
-      backgroundColor: Colors.pink.shade200,
+      backgroundColor: Colors.lightBlue[200],
     );
   }
 }
