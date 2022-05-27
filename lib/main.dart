@@ -1,14 +1,21 @@
-import 'dart:ui';
+import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dyeac/model/profile.dart';
+import 'package:dyeac/page/account_setting_page.dart';
+import 'package:dyeac/page/login_page.dart';
+import 'package:dyeac/page/register_page.dart';
+import 'package:dyeac/page/select_medicine_page.dart';
+import 'package:dyeac/page/treatment_history.dart';
+import 'package:dyeac/page/profile_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:my_seniorproject/data/MainWidget.dart';
-import 'package:my_seniorproject/data/Patient.dart';
-import 'package:my_seniorproject/data/NavBar.dart';
-import 'package:my_seniorproject/page/Patient_detail.dart';
-import 'package:my_seniorproject/page/my_account_page.dart';
-import 'package:my_seniorproject/page/login_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -19,57 +26,419 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.pink,
+        primaryColor: Color(0xFFFBBECFF),
       ),
-      home: MyHomePage(title: 'My home page'),
+      home: HomePageWidget(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
+class HomePageWidget extends StatefulWidget {
+  const HomePageWidget({Key key}) : super(key: key);
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _HomePageWidgetState createState() => _HomePageWidgetState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomePageWidgetState extends State<HomePageWidget> {
+  int H, h, m, s, hour, minute;
+  SharedPreferences loginData;
+  User user = FirebaseAuth.instance.currentUser;
+  bool newuser;
+  Profile loggedInUser = Profile();
+  Profile profile = Profile();
+
+  @override
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+  final auth = FirebaseAuth.instance;
+  final shape = RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(30),
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    initial();
+    checkStateLogin();
+    showTime();
+  }
+
+  void initial() async {
+    loginData = await SharedPreferences.getInstance();
+  }
+
+  void checkStateLogin() async {
+    loginData = await SharedPreferences.getInstance();
+    if (loginData == false) {
+      Navigator.pushReplacement(
+          context, new MaterialPageRoute(builder: (context) => LoginWidget()));
+    } else {
+      showUserData();
+    }
+  }
+
+  void showUserData() {
+    FirebaseFirestore.instance
+        .collection("user")
+        .doc(user.uid)
+        .get()
+        .then((value) {
+      this.loggedInUser = Profile.fromMap(value.data());
+      setState(() {});
+    });
+  }
+
+  void showTime() {
+    H = DateTime.now().hour;
+    //12 hour AM/PM
+    h = (DateTime.now().hour > 12)
+        ? DateTime.now().hour - 12
+        : (DateTime.now().hour == 0)
+            ? 12
+            : DateTime.now().hour;
+    m = DateTime.now().minute;
+    s = DateTime.now().second;
+    Timer.periodic(Duration(seconds: 1), (Timer timer) => getTime());
+  }
+
+  getTime() {
+    setState(() {
+      H = DateTime.now().hour;
+      // 12 hour AM/PM
+      h = (DateTime.now().hour > 12)
+          ? DateTime.now().hour - 12
+          : (DateTime.now().hour == 0)
+              ? 12
+              : DateTime.now().hour;
+      m = DateTime.now().minute;
+      s = DateTime.now().second;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // drawer: NavBar(),
-      // appBar: AppBar(
-      //   title: Text(
-      //     'รายชื่อผู้ป่วยในการดูแล',
-      //     style: TextStyle(fontSize: 20),
-      //   ),
-      //   actions: <Widget>[
-      //     IconButton(
-      //       icon: Icon(Icons.notifications_none_rounded),
-      //       onPressed: () {/* Write listener code here */},
-      //     ),
-      //     Padding(
-      //       padding: EdgeInsets.symmetric(horizontal: 5),
-      //     ),
-      //     Padding(
-      //       padding: EdgeInsets.symmetric(horizontal: 5),
-      //     ),
-      //   ],
-      //   backgroundColor: Colors.pink,
-      // ),
-      body: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 20),
-          height: 300,
-          width: double.maxFinite,
-          alignment: Alignment.center,
-          child: ListView(
-            children: [
-              // Patient("สวัสดั", " 12:30 น. "),
-              MainWidget("สมชาย สมหวังดังประสงค์", "18:00", "30")
-            ],
-          )),
-      backgroundColor: Colors.lightBlue[200],
+      key: scaffoldKey,
+      backgroundColor: Color(0xFFBBECFF),
+      body: SafeArea(
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 0.3,
+                      decoration: BoxDecoration(
+                        color: Color(0xFFFBBECFF),
+                      ),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
+                              child: Text(
+                                'สวัสดีคุณ ${loggedInUser.name} ${loggedInUser.surname}',
+                                style: TextStyle(
+                                    fontFamily: 'Sarabun',
+                                    fontSize: 23,
+                                    overflow: TextOverflow.ellipsis),
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+                              child: Text(
+                                'ขณะนี้เวลา',
+                                style: TextStyle(
+                                  fontFamily: 'Sarabun',
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+                              child: Text(
+                                '${(H < 10) ? "0$H" : H}:${(m < 10) ? "0$m" : m}',
+                                style: TextStyle(
+                                  fontFamily: 'Sarabun',
+                                  fontSize: 80,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+                              child: Text(
+                                'คุณจะต้องหยอดตาในอีก 30 นาที',
+                                style: TextStyle(
+                                  fontFamily: 'Sarabun',
+                                  fontSize: 17,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 0.155,
+                      decoration: BoxDecoration(
+                        color: Color(0xFFFBBECFF),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(20, 10, 20, 0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Expanded(
+                                  child: GridView(
+                                    padding: EdgeInsets.zero,
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      crossAxisSpacing: 10,
+                                      mainAxisSpacing: 10,
+                                      childAspectRatio: 1.5,
+                                    ),
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.vertical,
+                                    children: [
+                                      ElevatedButton.icon(
+                                        onPressed: () =>
+                                            Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ProfilePageWidget()),
+                                        ),
+                                        label: Text(
+                                          "ข้อมูลของฉัน",
+                                          style: TextStyle(
+                                            fontFamily: 'Sarabun',
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        icon: Icon(
+                                          Icons.account_circle_outlined,
+                                          size: 50,
+                                          color: Colors.black,
+                                        ),
+                                        style: ElevatedButton.styleFrom(
+                                          primary:
+                                              Color(0xFFFFFFFFF), // background
+                                          minimumSize: Size(200, 200),
+                                          side: BorderSide(
+                                            color: Colors.black,
+                                            width: 1,
+                                          ),
+                                          shape: shape,
+                                        ),
+                                      ),
+                                      ElevatedButton.icon(
+                                        onPressed: () =>
+                                            Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  TreatmentHistoryWidget()),
+                                        ),
+                                        label: Text(
+                                          "ประวัติการรักษา",
+                                          style: TextStyle(
+                                            fontFamily: 'Sarabun',
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        icon: Icon(
+                                          Icons.assignment_rounded,
+                                          size: 40,
+                                          color: Colors.black,
+                                        ),
+                                        style: ElevatedButton.styleFrom(
+                                          primary:
+                                              Color(0xFFFFFFFFF), // background
+                                          minimumSize: Size(200, 200),
+                                          side: BorderSide(
+                                            color: Colors.black,
+                                            width: 1,
+                                          ),
+                                          shape: shape,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 0.45,
+                      decoration: BoxDecoration(
+                        color: Color(0xFFFBBECFF),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.height * 0.13,
+                              decoration: BoxDecoration(
+                                color: Color(0xFFFBBECFF),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    20, 0, 20, 0),
+                                child: ElevatedButton.icon(
+                                  onPressed: () => Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            SelectMedicineWidget()),
+                                  ),
+                                  label: Text(
+                                    "เปลี่ยนเวลาหยอดตา",
+                                    style: TextStyle(
+                                      fontFamily: 'Sarabun',
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  icon: Icon(
+                                    Icons.schedule_sharp,
+                                    size: 50,
+                                    color: Colors.black,
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Color(0xFFFFFFFFF), // background
+                                    minimumSize: Size(130, 60),
+                                    side: BorderSide(
+                                      color: Colors.black,
+                                      width: 1,
+                                    ),
+                                    shape: shape,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height * 0.13,
+                            decoration: BoxDecoration(
+                              color: Color(0xFFFBBECFF),
+                            ),
+                            child: Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(20, 0, 20, 0),
+                              child: ElevatedButton.icon(
+                                onPressed: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          AccountSettingPage()),
+                                ),
+                                label: Text(
+                                  "ตั้งค่าบัญชีผู้ใช้",
+                                  style: TextStyle(
+                                    fontFamily: 'Sarabun',
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                icon: Icon(
+                                  Icons.miscellaneous_services_sharp,
+                                  size: 50,
+                                  color: Colors.black,
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  primary: Color(0xFFFFFFFFF), // background
+                                  minimumSize: Size(130, 60),
+                                  side: BorderSide(
+                                    color: Colors.black,
+                                    width: 1,
+                                  ),
+                                  shape: shape,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.height * 0.13,
+                              decoration: BoxDecoration(
+                                color: Color(0xFFFBBECFF),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    20, 0, 20, 0),
+                                child: ElevatedButton.icon(
+                                  onPressed: () {
+                                    auth.signOut().then((value) {
+                                      loginData.setBool('login', false);
+                                      print(loginData);
+                                      Navigator.pushReplacement(
+                                          context,
+                                          new MaterialPageRoute(
+                                              builder: (context) =>
+                                                  LoginWidget()));
+                                    });
+                                  },
+                                  label: Text(
+                                    "ออกจากระบบ",
+                                    style: TextStyle(
+                                      fontFamily: 'Sarabun',
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  icon: Icon(
+                                    Icons.logout,
+                                    size: 50,
+                                    color: Colors.black,
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Color(0xFFFFFFFFF), // background
+                                    minimumSize: Size(130, 60),
+                                    side: BorderSide(
+                                      color: Colors.black,
+                                      width: 1,
+                                    ),
+                                    shape: shape,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

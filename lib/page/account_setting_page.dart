@@ -1,17 +1,13 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:my_seniorproject/data/NavBar.dart';
 
-class Regiter_Patient extends StatelessWidget {
-  const Regiter_Patient({Key? key}) : super(key: key);
+class AccountSettingPage extends StatelessWidget {
+  const AccountSettingPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: NavBar(),
         appBar: AppBar(
-          title: Text('ลงทะเบียนผู้ป่วยใหม่'),
+          title: Text('ตั้งค่าบัญชีผู้ใช้'),
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.notifications_none_rounded),

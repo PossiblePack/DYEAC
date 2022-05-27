@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:my_seniorproject/page/my_account_page.dart';
-import 'package:my_seniorproject/page/login_page.dart';
-import 'package:my_seniorproject/page/Regiter_patient.dart';
-import 'package:my_seniorproject/page/appointment_table.dart';
+import 'package:dyeac/page/profile_page.dart';
+import 'package:dyeac/page/login_page.dart';
+import 'package:dyeac/page/treatment_history.dart';
 
 class NavBar extends StatelessWidget {
-  const NavBar({Key? key}) : super(key: key);
+  const NavBar({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,21 +35,14 @@ class NavBar extends StatelessWidget {
             leading: Icon(Icons.account_box_rounded),
             title: Text('ข้อมูลของฉัน'),
             onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => MyAccountPage()),
-            ),
-          ),
-          ListTile(
-            leading: Icon(Icons.task_rounded),
-            title: Text('ลงทะเบียนผู้ป่วยใหม่'),
-            onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => Regiter_Patient()),
+              MaterialPageRoute(builder: (context) => ProfilePageWidget()),
             ),
           ),
           ListTile(
             leading: Icon(Icons.table_view_rounded),
             title: Text('ตารางการนัดหมาย'),
             onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => AppoinmentTable()),
+              MaterialPageRoute(builder: (context) => TreatmentHistoryWidget()),
             ),
           ),
           Divider(),
@@ -58,7 +50,7 @@ class NavBar extends StatelessWidget {
             leading: Icon(Icons.logout_rounded),
             title: Text('ลงชื่อออก'),
             onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => LoginPage()),
+              MaterialPageRoute(builder: (context) => LoginWidget()),
             ),
           )
         ],

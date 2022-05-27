@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_seniorproject/page/Patient_detail.dart';
+import 'package:dyeac/page/notification_setting_page.dart';
 
 class Patient extends StatelessWidget {
   String fullnameVal;
@@ -19,14 +19,10 @@ class Patient extends StatelessWidget {
             fullnameVal.toString(),
             style: TextStyle(fontSize: 25),
           ),
-          subtitle: Text(
-            "หยอดตาครั้งล่าสุดเมื่อเวลา $timeVal",
-            style: TextStyle(fontSize: 15),
-          ),
           trailing: TextButton(
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return PatientDetail();
+                return ChangeTimeToTakeMedicineWidget();
               }));
             },
             child: Text('ดูเพิ่มเติม'),
