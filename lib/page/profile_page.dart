@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -15,12 +17,15 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   User user = FirebaseAuth.instance.currentUser;
   Profile loggedInUser = Profile();
+  String avatarUrl;
+  Bool newuser;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getUserData();
+    getAvatar();
   }
 
   void getUserData() {
@@ -30,8 +35,17 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
         .get()
         .then((value) {
       this.loggedInUser = Profile.fromMap(value.data());
+      getAvatar();
       setState(() {});
     });
+  }
+
+  void getAvatar() {
+    if (loggedInUser.gender == 'ชาย') {
+      avatarUrl = 'assets/images/male.png';
+    } else {
+      avatarUrl = 'assets/images/female.png';
+    }
   }
 
   @override
@@ -72,7 +86,7 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(20, 10, 20, 0),
+                        padding: EdgeInsetsDirectional.fromSTEB(80, 10, 80, 0),
                         child: Container(
                           width: MediaQuery.of(context).size.width,
                           height: MediaQuery.of(context).size.height * 0.05,
@@ -85,11 +99,12 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                           ),
                           alignment: AlignmentDirectional(0, 0),
                           child: Text(
-                            'ระบบปรับเปลี่ยนเวลาการหยอดตา',
+                            'ข้อมูลของฉัน',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontFamily: 'Sarabun',
-                              fontSize: 20,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
@@ -97,16 +112,20 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
                         child: Container(
-                          width: 125,
-                          height: 125,
-                          clipBehavior: Clip.antiAlias,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                          ),
-                          child: Image.asset(
-                            'assets/images/man.png',
-                          ),
-                        ),
+                            width: 125,
+                            height: 125,
+                            clipBehavior: Clip.antiAlias,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            child: Container(
+                              child: Container(
+                                child: Image.asset(
+                                  '$avatarUrl',
+                                ),
+                              ),
+                              color: Colors.white,
+                            )),
                       ),
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(20, 10, 20, 0),
@@ -124,7 +143,7 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                             padding:
                                 EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
                             child: Text(
-                              'ชื่อ: ${loggedInUser.name}  ${loggedInUser.surname}\nอีเมลล์: ${loggedInUser.email}\nหมายเลขประจำตัวประชาชน:\n1160701353629\nเบอร์โทร: 099-999-9999\nแพทย์ผู้รับผิดชอบ: ${loggedInUser.doctorname}\nอาการป่วย: ระคายเคืองตา\n\nการนัดหมาย:\nวันที่ 31 ธันวาคม 2564 เวลา 09:00 น. \nห้องตรวจหมายเลข 10 โรงพยาบาลมหาราช\nเชียงใหม่\n\nพฤตกรรมการหยอดตา: \nสม่ำเสมอ ตรงเวลา',
+                              'ชื่อ: ${loggedInUser.name}  ${loggedInUser.surname}\nอีเมลล์: ${loggedInUser.email}\nหมายเลขประจำตัวประชาชน:\n1160701353629\nเพศ: ${loggedInUser.gender}\nเบอร์โทร: 099-999-9999\nแพทย์ผู้รับผิดชอบ: ${loggedInUser.doctorname}\nอาการป่วย: ระคายเคืองตา\n\nการนัดหมาย:\nวันที่ 31 ธันวาคม 2564 เวลา 09:00 น. \nห้องตรวจหมายเลข 10 โรงพยาบาลมหาราช\nเชียงใหม่\n\nพฤตกรรมการหยอดตา: \nสม่ำเสมอ ตรงเวลา',
                               style: TextStyle(
                                 fontFamily: 'Sarabun',
                                 fontSize: 16,

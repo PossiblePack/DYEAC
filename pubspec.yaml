@@ -40,6 +40,18 @@ dependencies:
   firebase_auth: ^3.3.18
   fluttertoast: ^8.0.9
   cloud_firestore: ^3.1.15
+  flutter_local_notifications: ^9.6.0
+  flutter_launcher_icons: ^0.9.3
+  rxdart: ^0.27.4
+  timezone: ^0.8.0
+  flutter_native_timezone: ^2.0.0
+  path_provider: ^2.0.11
+  http: ^0.13.4
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icons/icon.png"
 
 
   # The following adds the Cupertino Icons font to your application.

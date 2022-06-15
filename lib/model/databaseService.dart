@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class DatabaseService {
+class DatabaseUserService {
   final String uid;
-  DatabaseService({this.uid});
+  DatabaseUserService({this.uid});
 
   final CollectionReference userCollections =
       FirebaseFirestore.instance.collection('user');

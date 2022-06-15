@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:dyeac/data/Widget/Patient.dart';
-import 'package:dyeac/page/notification_setting_page.dart';
 import 'package:dyeac/page/profile_page.dart';
 import 'package:dyeac/page/login_page.dart';
 

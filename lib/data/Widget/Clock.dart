@@ -33,78 +33,84 @@ class _ClockState extends State<Clock> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Stack(
-        children: <Widget>[
-          Container(
-            child: Container(
-              child: CircleAvatar(backgroundColor: Colors.white),
-              height: 250,
-              width: 250,
-            ),
-            alignment: Alignment(0, 0),
-          ),
-          Image.asset('assets/images/clock.png'),
-          //second line
-          Transform.rotate(
-            child: Container(
+      child: Container(
+        child: Stack(
+          children: <Widget>[
+            Container(
               child: Container(
-                height: 120,
-                width: 2,
+                child: CircleAvatar(backgroundColor: Colors.white),
+                height: 220,
+                width: 220,
+              ),
+              alignment: Alignment(0, 0),
+            ),
+            Container(
+              child: Image.asset('assets/images/clock.png'),
+              alignment: Alignment(0, 0),
+            ),
+            //second line
+            Transform.rotate(
+              child: Container(
+                child: Container(
+                  height: 120,
+                  width: 2,
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                alignment: Alignment(0, -0.35),
+              ),
+              angle: secondAngle,
+            ),
+            //minute line
+            Transform.rotate(
+              child: Container(
+                child: Container(
+                  height: 80,
+                  width: 5,
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                alignment: Alignment(0, -0.35),
+              ),
+              angle: minuteAngle,
+            ),
+            //hour line
+            Transform.rotate(
+              child: Container(
+                child: Container(
+                  height: 70,
+                  width: 8,
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                alignment: Alignment(0, -0.2),
+              ),
+              angle: hourAngle,
+            ),
+            //dot
+            Container(
+              child: Container(
+                height: 15,
+                width: 15,
                 decoration: BoxDecoration(
                   color: Colors.black,
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(50),
                 ),
               ),
-              alignment: Alignment(0, -0.35),
+              alignment: Alignment(0, 0),
             ),
-            angle: secondAngle,
-          ),
-          //minute line
-          Transform.rotate(
-            child: Container(
-              child: Container(
-                height: 80,
-                width: 5,
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              alignment: Alignment(0, -0.35),
-            ),
-            angle: minuteAngle,
-          ),
-          //hour line
-          Transform.rotate(
-            child: Container(
-              child: Container(
-                height: 80,
-                width: 7,
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              alignment: Alignment(0, -0.2),
-            ),
-            angle: hourAngle,
-          ),
-          //dot
-          Container(
-            child: Container(
-              height: 15,
-              width: 15,
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(50),
-              ),
-            ),
-            alignment: Alignment(0, 0),
-          ),
-        ],
+          ],
+        ),
+        width: 220,
+        height: 220,
+        alignment: Alignment(0, 0),
       ),
-      width: 250,
-      height: 250,
     );
   }
 }

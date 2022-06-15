@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dyeac/model/profile.dart';
 import 'package:dyeac/page/change_time_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class SelectMedicineWidget extends StatefulWidget {
   const SelectMedicineWidget({Key key}) : super(key: key);
@@ -11,6 +13,27 @@ class SelectMedicineWidget extends StatefulWidget {
 
 class _SelectMedicineWidgetState extends State<SelectMedicineWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  User user = FirebaseAuth.instance.currentUser;
+  Profile loggedInUser = Profile();
+  Profile profile = Profile();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    showUserData();
+  }
+
+  void showUserData() {
+    FirebaseFirestore.instance
+        .collection("user")
+        .doc(user.uid)
+        .get()
+        .then((value) {
+      this.loggedInUser = Profile.fromMap(value.data());
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +73,7 @@ class _SelectMedicineWidgetState extends State<SelectMedicineWidget> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(20, 10, 20, 0),
+                        padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 0),
                         child: Container(
                           width: MediaQuery.of(context).size.width,
                           height: MediaQuery.of(context).size.height * 0.05,
@@ -67,7 +90,8 @@ class _SelectMedicineWidgetState extends State<SelectMedicineWidget> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontFamily: 'Sarabun',
-                              fontSize: 20,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
@@ -139,7 +163,7 @@ class _SelectMedicineWidgetState extends State<SelectMedicineWidget> {
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           5, 0, 0, 0),
                                       child: Text(
-                                        'ชื่อยา: DexOph\nเวลาหยอดครั้งต่อไป',
+                                        'ชื่อยา: DexOph\nเวลาหยอดครั้งต่อไป\n',
                                         style: TextStyle(
                                           fontFamily: 'Sarabun',
                                           fontSize: 16,
@@ -177,6 +201,7 @@ class _SelectMedicineWidgetState extends State<SelectMedicineWidget> {
                     ),
                   ),
                 ),
+                // Text('${loggedInUser.prescriptionNO}'),
               ],
             ),
           ),

@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dyeac/api/notification_api.dart';
 import 'package:dyeac/model/profile.dart';
 import 'package:dyeac/page/account_setting_page.dart';
 import 'package:dyeac/page/login_page.dart';
+import 'package:dyeac/page/medicine_information_page.dart';
 import 'package:dyeac/page/register_page.dart';
 import 'package:dyeac/page/select_medicine_page.dart';
 import 'package:dyeac/page/treatment_history.dart';
@@ -11,10 +13,32 @@ import 'package:dyeac/page/profile_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-void main() async {
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // const AndroidInitializationSettings androidInitializationSettingsAndroid =
+  //     AndroidInitializationSettings("@mipmap/ic_launcher");
+
+  // const IOSInitializationSettings initializationSettingsIOS =
+  //     IOSInitializationSettings(
+  //   requestAlertPermission: true,
+  //   requestBadgePermission: true,
+  //   requestSoundPermission: true,
+  // );
+
+  // final InitializationSettings initializationSettings = InitializationSettings(
+  //   android: androidInitializationSettingsAndroid,
+  //   iOS: initializationSettingsIOS,
+  // );
+
+  // await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
   await Firebase.initializeApp();
   runApp(MyApp());
 }
@@ -62,7 +86,17 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     initial();
     checkStateLogin();
     showTime();
+    NotificationApi.init(initSchedule: true);
+    listenNotification();
   }
+
+  void listenNotification() =>
+      NotificationApi.onNotification.stream.listen(onClickNotification);
+
+  void onClickNotification(String payload) => Navigator.of(context).push(
+        MaterialPageRoute(
+            builder: (context) => MedicineInformationWidget(payload: payload)),
+      );
 
   void initial() async {
     loginData = await SharedPreferences.getInstance();
@@ -70,7 +104,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
   void checkStateLogin() async {
     loginData = await SharedPreferences.getInstance();
-    if (loginData == false) {
+    newuser = (loginData.getBool('login') ?? true);
+
+    if (newuser == false) {
       Navigator.pushReplacement(
           context, new MaterialPageRoute(builder: (context) => LoginWidget()));
     } else {
@@ -149,7 +185,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 'สวัสดีคุณ ${loggedInUser.name} ${loggedInUser.surname}',
                                 style: TextStyle(
                                     fontFamily: 'Sarabun',
-                                    fontSize: 23,
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold,
                                     overflow: TextOverflow.ellipsis),
                               ),
                             ),

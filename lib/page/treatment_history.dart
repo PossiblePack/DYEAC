@@ -15,12 +15,14 @@ class _TreatmentHistoryWidgetState extends State<TreatmentHistoryWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   User user = FirebaseAuth.instance.currentUser;
   Profile loggedInUser = Profile();
+  String avatarUrl;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getUserData();
+    getAvatar();
   }
 
   void getUserData() {
@@ -30,8 +32,17 @@ class _TreatmentHistoryWidgetState extends State<TreatmentHistoryWidget> {
         .get()
         .then((value) {
       this.loggedInUser = Profile.fromMap(value.data());
+      getAvatar();
       setState(() {});
     });
+  }
+
+  void getAvatar() {
+    if (loggedInUser.gender == 'ชาย') {
+      avatarUrl = 'assets/images/male.png';
+    } else {
+      avatarUrl = 'assets/images/female.png';
+    }
   }
 
   @override
@@ -72,7 +83,7 @@ class _TreatmentHistoryWidgetState extends State<TreatmentHistoryWidget> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(20, 10, 20, 0),
+                        padding: EdgeInsetsDirectional.fromSTEB(80, 10, 80, 0),
                         child: Container(
                           width: MediaQuery.of(context).size.width,
                           height: MediaQuery.of(context).size.height * 0.05,
@@ -85,11 +96,12 @@ class _TreatmentHistoryWidgetState extends State<TreatmentHistoryWidget> {
                           ),
                           alignment: AlignmentDirectional(0, 0),
                           child: Text(
-                            'ระบบปรับเปลี่ยนเวลาการหยอดตา',
+                            'ประวัติการรักษา',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontFamily: 'Sarabun',
                               fontSize: 20,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
@@ -97,16 +109,20 @@ class _TreatmentHistoryWidgetState extends State<TreatmentHistoryWidget> {
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
                         child: Container(
-                          width: 125,
-                          height: 125,
-                          clipBehavior: Clip.antiAlias,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                          ),
-                          child: Image.asset(
-                            'assets/images/man.png',
-                          ),
-                        ),
+                            width: 125,
+                            height: 125,
+                            clipBehavior: Clip.antiAlias,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            child: Container(
+                              child: Container(
+                                child: Image.asset(
+                                  '$avatarUrl',
+                                ),
+                              ),
+                              color: Colors.white,
+                            )),
                       ),
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(50, 10, 50, 0),
@@ -124,7 +140,7 @@ class _TreatmentHistoryWidgetState extends State<TreatmentHistoryWidget> {
                           child: Padding(
                             padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
                             child: Text(
-                              'ชื่อ: ${loggedInUser.name} ${loggedInUser.surname}\nอีเมลล์: ${loggedInUser.email}',
+                              'ชื่อ: ${loggedInUser.name} ${loggedInUser.surname}\nอีเมล: ${loggedInUser.email}',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontFamily: 'Sarabun',
@@ -151,7 +167,7 @@ class _TreatmentHistoryWidgetState extends State<TreatmentHistoryWidget> {
                               '2/12/2564  อาการ: ระคายเคืองรุนแรง\nข้อแนะนำจากแพทย์ ต้องหมั่นหยอดตาบริเวณดวงตา          และรักษาความสะอาด ',
                               style: TextStyle(
                                 fontFamily: 'Sarabun',
-                                fontSize: 14,
+                                fontSize: 15,
                               ),
                             ),
                           ),
@@ -170,12 +186,12 @@ class _TreatmentHistoryWidgetState extends State<TreatmentHistoryWidget> {
                           ),
                           child: Padding(
                             padding:
-                                EdgeInsetsDirectional.fromSTEB(10, 10, 5, 0),
+                                EdgeInsetsDirectional.fromSTEB(10, 10, 5, 5),
                             child: Text(
                               '12/12/2564  อาการระคายเคืองลด\nคำแนะนำจากแพทย์ ต้องหมั่นหยอดตาและลงแต่ยังไม่หายขาด   รักษาความสะอาด   \n                            ',
                               style: TextStyle(
                                 fontFamily: 'Sarabun',
-                                fontSize: 14,
+                                fontSize: 15,
                               ),
                             ),
                           ),

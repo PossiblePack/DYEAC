@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:dyeac/page/notification_setting_page.dart';
+
+import '../../page/change_time_page.dart';
 
 class Patient extends StatelessWidget {
   String fullnameVal;

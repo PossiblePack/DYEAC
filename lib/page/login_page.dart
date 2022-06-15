@@ -43,7 +43,8 @@ class _LoginWidgetState extends State<LoginWidget> {
 
   void checkStateLogin() async {
     loginData = await SharedPreferences.getInstance();
-    if (loginData == true) {
+    newuser = (loginData.getBool('login') ?? true);
+    if (newuser == true) {
       Navigator.pushReplacement(context,
           new MaterialPageRoute(builder: (context) => HomePageWidget()));
     }
