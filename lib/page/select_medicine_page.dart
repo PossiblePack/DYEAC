@@ -201,7 +201,7 @@ class _SelectMedicineWidgetState extends State<SelectMedicineWidget> {
                     ),
                   ),
                 ),
-                // Text('${loggedInUser.prescriptionNO}'),
+                Text('${loggedInUser.prescriptionNO}'),
               ],
             ),
           ),

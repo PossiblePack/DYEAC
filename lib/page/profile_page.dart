@@ -143,7 +143,7 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                             padding:
                                 EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
                             child: Text(
-                              'ชื่อ: ${loggedInUser.name}  ${loggedInUser.surname}\nอีเมลล์: ${loggedInUser.email}\nหมายเลขประจำตัวประชาชน:\n1160701353629\nเพศ: ${loggedInUser.gender}\nเบอร์โทร: 099-999-9999\nแพทย์ผู้รับผิดชอบ: ${loggedInUser.doctorname}\nอาการป่วย: ระคายเคืองตา\n\nการนัดหมาย:\nวันที่ 31 ธันวาคม 2564 เวลา 09:00 น. \nห้องตรวจหมายเลข 10 โรงพยาบาลมหาราช\nเชียงใหม่\n\nพฤตกรรมการหยอดตา: \nสม่ำเสมอ ตรงเวลา',
+                              'ชื่อ: ${loggedInUser.name}  ${loggedInUser.surname}\nอีเมลล์: ${loggedInUser.email}\nหมายเลขประจำตัวประชาชน:\n1160701353629\nเพศ: ${loggedInUser.gender}\nเบอร์โทร: 099-999-9999\nแพทย์ผู้รับผิดชอบ: ${loggedInUser.doctorname}\nอาการป่วย: ระคายเคืองตา\n\nการนัดหมาย:\nวันที่ 31 ธันวาคม 2564 เวลา 09:00 น. \nห้องตรวจหมายเลข 10 โรงพยาบาลมหาราช\nเชียงใหม่\n\nพฤตกรรมการหยอดตา: \nสม่ำเสมอ ตรงเวลา\n',
                               style: TextStyle(
                                 fontFamily: 'Sarabun',
                                 fontSize: 16,

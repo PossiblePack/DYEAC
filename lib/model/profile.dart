@@ -4,12 +4,12 @@ class Profile {
   String uid;
   String name;
   String surname;
-  String doctorname;
   String gender;
+  String doctorname;
   String email;
   String password;
   String confirmpassword;
-  // Array prescriptionNO;
+  List<dynamic> prescriptionNO;
 
   Profile({
     this.uid,
@@ -20,7 +20,7 @@ class Profile {
     this.email,
     this.password,
     this.confirmpassword,
-    // this.prescriptionNO,
+    this.prescriptionNO,
   });
 
   factory Profile.fromMap(map) {
@@ -33,7 +33,7 @@ class Profile {
       email: map['email'],
       password: map['password'],
       confirmpassword: map['confirmpassword'],
-      // prescriptionNO: map['prescriptionNO'],
+      prescriptionNO: map['prescriptionNO'],
     );
   }
 
@@ -47,7 +47,7 @@ class Profile {
       'email': email,
       'password': password,
       'confirmpassword': confirmpassword,
-      // 'prescriptionNO': prescriptionNO,
+      'prescriptionNO': prescriptionNO,
     };
   }
 }

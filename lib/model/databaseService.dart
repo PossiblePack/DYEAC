@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseUserService {
@@ -14,6 +16,7 @@ class DatabaseUserService {
     String email,
     String password,
     String confirmpassword,
+    List<String> prescriptionNO,
   ) async {
     return await userCollections.doc(uid).set({
       "name": name,
@@ -21,7 +24,10 @@ class DatabaseUserService {
       "doctorname": doctorname,
       "email": email,
       "password": password,
-      "confirmpassword": confirmpassword
+      "confirmpassword": confirmpassword,
+      "prescriptionNO": prescriptionNO,
     });
   }
 }
+
+class MedicineService {}
