@@ -13,15 +13,15 @@ class Medicine {
     this.useOptionID,
   });
 
-  // factory Medicine.fromMap(map) {
-  //   return Medicine(
-  //     medicineID: map['medicineID'],
-  //     medicineName: map['medicineName'],
-  //     imageURL: map['imageURL'],
-  //     data: map['data'],
-  //     useOptionID: map['useOptionID'],
-  //   );
-  // }
+  factory Medicine.fromMap(map) {
+    return Medicine(
+      medicineID: map['medicineID'],
+      medicineName: map['medicineName'],
+      imageURL: map['imageURL'],
+      data: map['data'],
+      useOptionID: map['useOptionID'],
+    );
+  }
 
   Map<String, dynamic> toMap() {
     return {
@@ -40,6 +40,4 @@ class Medicine {
         data: json['data'],
         useOptionID: json['useOptionID'],
       );
-
-  toList() {}
 }

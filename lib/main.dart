@@ -21,24 +21,6 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // const AndroidInitializationSettings androidInitializationSettingsAndroid =
-  //     AndroidInitializationSettings("@mipmap/ic_launcher");
-
-  // const IOSInitializationSettings initializationSettingsIOS =
-  //     IOSInitializationSettings(
-  //   requestAlertPermission: true,
-  //   requestBadgePermission: true,
-  //   requestSoundPermission: true,
-  // );
-
-  // final InitializationSettings initializationSettings = InitializationSettings(
-  //   android: androidInitializationSettingsAndroid,
-  //   iOS: initializationSettingsIOS,
-  // );
-
-  // await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-
   await Firebase.initializeApp();
   runApp(MyApp());
 }
@@ -250,7 +232,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       crossAxisCount: 2,
                                       crossAxisSpacing: 10,
                                       mainAxisSpacing: 10,
-                                      childAspectRatio: 1.5,
+                                      childAspectRatio: 1.6,
                                     ),
                                     shrinkWrap: true,
                                     scrollDirection: Axis.vertical,
