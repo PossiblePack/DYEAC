@@ -3,28 +3,25 @@ class Medicine {
   String medicineName;
   String imageURL;
   String data;
-  String useOptionID_1;
-  String useOptionID_2;
+  List<dynamic> useOptionID;
 
   Medicine({
     this.medicineID,
     this.medicineName,
     this.imageURL,
     this.data,
-    this.useOptionID_1,
-    this.useOptionID_2,
+    this.useOptionID,
   });
 
-  factory Medicine.fromMap(map) {
-    return Medicine(
-      medicineID: map['medicineID'],
-      medicineName: map['medicineName'],
-      imageURL: map['imageURL'],
-      data: map['data'],
-      useOptionID_1: map['useOptionID_1'],
-      useOptionID_2: map['useOptionID_2'],
-    );
-  }
+  // factory Medicine.fromMap(map) {
+  //   return Medicine(
+  //     medicineID: map['medicineID'],
+  //     medicineName: map['medicineName'],
+  //     imageURL: map['imageURL'],
+  //     data: map['data'],
+  //     useOptionID: map['useOptionID'],
+  //   );
+  // }
 
   Map<String, dynamic> toMap() {
     return {
@@ -32,8 +29,17 @@ class Medicine {
       'medicineName': medicineName,
       'imageURL': imageURL,
       'data': data,
-      'useOptionID_1': useOptionID_1,
-      'useOptionID_2': useOptionID_2,
+      'useOptionID': useOptionID,
     };
   }
+
+  static Medicine fromJson(Map<String, dynamic> json) => Medicine(
+        medicineID: json['medicineID'],
+        medicineName: json['medicineName'],
+        imageURL: json['imageURL'],
+        data: json['data'],
+        useOptionID: json['useOptionID'],
+      );
+
+  toList() {}
 }

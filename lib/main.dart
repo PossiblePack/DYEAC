@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Color(0xFFFBBECFF),
       ),
-      home: HomePageWidget(),
+      home: LoginWidget(),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -106,7 +106,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     loginData = await SharedPreferences.getInstance();
     newuser = (loginData.getBool('login') ?? true);
 
-    if (newuser == false) {
+    if (loginData.getBool('login') == false) {
       Navigator.pushReplacement(
           context, new MaterialPageRoute(builder: (context) => LoginWidget()));
     } else {
