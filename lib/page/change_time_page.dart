@@ -17,6 +17,7 @@ class _ChangeTimeToTakeMedicineWidgetState
     extends State<ChangeTimeToTakeMedicineWidget> {
   int H, h, m, s, hour, minute;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final _unfocusNode = FocusNode();
   TimeOfDay firstTimeAlarm = TimeOfDay(hour: 8, minute: 00);
 
   String compareTime(firstTimeAlarm) {
@@ -42,6 +43,12 @@ class _ChangeTimeToTakeMedicineWidgetState
     showTime();
   }
 
+  @override
+  void dispose() {
+    _unfocusNode.dispose();
+    super.dispose();
+  }
+
   void showTime() {
     H = DateTime.now().hour;
     //12 hour AM/PM
@@ -56,7 +63,8 @@ class _ChangeTimeToTakeMedicineWidgetState
   }
 
   getTime() {
-    setState(() {
+    if (this.mounted) {
+      setState(() {
       H = DateTime.now().hour;
       // 12 hour AM/PM
       h = (DateTime.now().hour > 12)
@@ -67,6 +75,7 @@ class _ChangeTimeToTakeMedicineWidgetState
       m = DateTime.now().minute;
       s = DateTime.now().second;
     });
+    }
   }
 
   @override
@@ -330,12 +339,14 @@ class _ChangeTimeToTakeMedicineWidgetState
                   MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
               child: childWidget);
         }).then((value) {
-      setState(() {
+      if(mounted){
+        setState(() {
         if (value == null) {
         } else {
           firstTimeAlarm = value;
         }
       });
+      }
     });
   }
 }

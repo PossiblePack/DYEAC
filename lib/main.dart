@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dyeac/api/notification_api.dart';
 import 'package:dyeac/model/profile.dart';
 import 'package:dyeac/page/account_setting_page.dart';
+import 'package:dyeac/page/change_time_page.dart';
 import 'package:dyeac/page/login_page.dart';
 import 'package:dyeac/page/medicine_information_page.dart';
 import 'package:dyeac/page/register_page.dart';
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
     );
   }
-}
+}   
 
 class HomePageWidget extends StatefulWidget {
   const HomePageWidget({Key key}) : super(key: key);
@@ -48,6 +49,7 @@ class HomePageWidget extends StatefulWidget {
 }
 
 class _HomePageWidgetState extends State<HomePageWidget> {
+  final _unfocusNode = FocusNode();
   int H, h, m, s, hour, minute;
   SharedPreferences loginData;
   User user = FirebaseAuth.instance.currentUser;
@@ -70,6 +72,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     showTime();
     NotificationApi.init(initSchedule: true);
     listenNotification();
+  }
+
+  @override
+  void dispose() {
+    _unfocusNode.dispose();
+    super.dispose();
   }
 
   void listenNotification() =>
@@ -121,17 +129,19 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   }
 
   getTime() {
-    setState(() {
-      H = DateTime.now().hour;
-      // 12 hour AM/PM
-      h = (DateTime.now().hour > 12)
-          ? DateTime.now().hour - 12
-          : (DateTime.now().hour == 0)
-              ? 12
-              : DateTime.now().hour;
-      m = DateTime.now().minute;
-      s = DateTime.now().second;
-    });
+    if(mounted){
+      setState(() {
+        H = DateTime.now().hour;
+        // 12 hour AM/PM
+        h = (DateTime.now().hour > 12)
+            ? DateTime.now().hour - 12
+            : (DateTime.now().hour == 0)
+                ? 12
+                : DateTime.now().hour;
+        m = DateTime.now().minute;
+        s = DateTime.now().second;
+      });
+    }
   }
 
   @override
@@ -333,7 +343,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   onPressed: () => Navigator.of(context).push(
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            SelectMedicineWidget()),
+                                            SelectMedicineWidget()
+                                            // ChangeTimeToTakeMedicineWidget()
+                                            ),
                                   ),
                                   label: Text(
                                     "เปลี่ยนเวลาหยอดตา",

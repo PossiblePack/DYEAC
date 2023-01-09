@@ -18,12 +18,19 @@ class _SelectMedicineWidgetState extends State<SelectMedicineWidget> {
   User user = FirebaseAuth.instance.currentUser;
   Profile loggedInUser = Profile();
   final storage = FirebaseStorage.instance;
+  final _unfocusNode = FocusNode();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     showUserData();
+  }
+
+  @override
+  void dispose() {
+    _unfocusNode.dispose();
+    super.dispose();
   }
 
   void showUserData() {
@@ -122,107 +129,114 @@ class _SelectMedicineWidgetState extends State<SelectMedicineWidget> {
           ),
         ),
       );
+      
+        @override
+        Widget build(BuildContext context) {
+          // TODO: implement build
+          throw UnimplementedError();
+        }
 
-  Stream<List<Medicine>> readMedicine() => FirebaseFirestore.instance
-      .collection('medicine')
-      .snapshots()
-      .map((snapshot) =>
-          snapshot.docs.map((doc) => Medicine.fromJson(doc.data())).toList());
+  // Stream<List<Medicine>> readMedicine() => FirebaseFirestore.instance
+  //     .collection('medicine')
+  //     .snapshots()
+  //     .map((snapshot) =>
+  //         snapshot.docs.map((doc) => Medicine.fromJson(doc.data())).toList());
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        key: scaffoldKey,
-        backgroundColor: Color(0xFFBBECFF),
-        body: StreamBuilder<List<Medicine>>(
-            stream: readMedicine(),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Text('Somthing went wrong! ${snapshot.error}');
-              } else if (snapshot.hasData) {
-                final medicines = snapshot.data;
-                return ListView(
-                  children: medicines.map(showMedicine).toList(),
-                );
-              } else {
-                return CircularProgressIndicator();
-              }
-            }));
-  }
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Scaffold(
+  //       key: scaffoldKey,
+  //       backgroundColor: Color(0xFFBBECFF),
+  //       body: StreamBuilder<List<Medicine>>(
+  //           stream: readMedicine(),
+  //           builder: (context, snapshot) {
+  //             if (snapshot.hasError) {
+  //               return Text('Somthing went wrong! ${snapshot.error}');
+  //             } else if (snapshot.hasData) {
+  //               final medicines = snapshot.data;
+  //               return ListView(
+  //                 children: medicines.map(showMedicine).toList(),
+  //               );
+  //             } else {
+  //               return CircularProgressIndicator();
+  //             }
+  //           })
+  //           );
+  // }
 
-  Widget header(context) {
-    return SafeArea(
-        child: GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.1,
-                    height: MediaQuery.of(context).size.height * 0.03,
-                    decoration: BoxDecoration(
-                      color: Color(0xFFBBECFF),
-                      shape: BoxShape.rectangle,
-                    ),
-                    alignment: AlignmentDirectional(-1, 0),
-                    child: InkWell(
-                      onTap: () async {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(
-                        Icons.arrow_back_rounded,
-                        color: Colors.black,
-                        size: 24,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 0),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * 0.05,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(30),
-                        border: Border.all(
-                          color: Colors.black,
-                        ),
-                      ),
-                      alignment: AlignmentDirectional(0, 0),
-                      child: Text(
-                        'ระบบปรับเปลี่ยนเวลาการหยอดตา',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: 'Sarabun',
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0, 5, 0, 0),
-              child: Text(
-                'กรุณาเลือกชนิดยาที่ท่านต้องการปรับเปลี่ยนเวลา',
-                style: TextStyle(
-                  fontFamily: 'Sarabun',
-                  fontSize: 16,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ));
-  }
+//   Widget header(context) {
+//     return SafeArea(
+//         child: GestureDetector(
+//       onTap: () => FocusScope.of(context).unfocus(),
+//       child: SingleChildScrollView(
+//         child: Column(
+//           mainAxisSize: MainAxisSize.max,
+//           children: [
+//             Padding(
+//               padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
+//               child: Column(
+//                 mainAxisSize: MainAxisSize.max,
+//                 crossAxisAlignment: CrossAxisAlignment.stretch,
+//                 children: [
+//                   Container(
+//                     width: MediaQuery.of(context).size.width * 0.1,
+//                     height: MediaQuery.of(context).size.height * 0.03,
+//                     decoration: BoxDecoration(
+//                       color: Color(0xFFBBECFF),
+//                       shape: BoxShape.rectangle,
+//                     ),
+//                     alignment: AlignmentDirectional(-1, 0),
+//                     child: InkWell(
+//                       onTap: () async {
+//                         Navigator.pop(context);
+//                       },
+//                       child: Icon(
+//                         Icons.arrow_back_rounded,
+//                         color: Colors.black,
+//                         size: 24,
+//                       ),
+//                     ),
+//                   ),
+//                   Padding(
+//                     padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 0),
+//                     child: Container(
+//                       width: MediaQuery.of(context).size.width,
+//                       height: MediaQuery.of(context).size.height * 0.05,
+//                       decoration: BoxDecoration(
+//                         color: Colors.white,
+//                         borderRadius: BorderRadius.circular(30),
+//                         border: Border.all(
+//                           color: Colors.black,
+//                         ),
+//                       ),
+//                       alignment: AlignmentDirectional(0, 0),
+//                       child: Text(
+//                         'ระบบปรับเปลี่ยนเวลาการหยอดตา',
+//                         textAlign: TextAlign.center,
+//                         style: TextStyle(
+//                           fontFamily: 'Sarabun',
+//                           fontSize: 22,
+//                           fontWeight: FontWeight.bold,
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//             Padding(
+//               padding: EdgeInsetsDirectional.fromSTEB(0, 5, 0, 0),
+//               child: Text(
+//                 'กรุณาเลือกชนิดยาที่ท่านต้องการปรับเปลี่ยนเวลา',
+//                 style: TextStyle(
+//                   fontFamily: 'Sarabun',
+//                   fontSize: 16,
+//                 ),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     ));
+//   }
 }

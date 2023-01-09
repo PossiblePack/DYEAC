@@ -11,6 +11,7 @@ class Clock extends StatefulWidget {
 }
 
 class _ClockState extends State<Clock> {
+  final _unfocusNode = FocusNode();
   double minuteAngle = 0;
   double secondAngle = 0;
   double hourAngle = 0;
@@ -22,12 +23,20 @@ class _ClockState extends State<Clock> {
     super.initState();
     Timer.periodic(Duration(milliseconds: 500), (timer) {
       final now = DateTime.now();
-      setState(() {
-        secondAngle = (pi / 30) * now.second;
-        minuteAngle = pi / 30 * now.minute;
-        hourAngle = (pi / 6 * now.hour) + (pi / 45 * minuteAngle);
-      });
+      if(mounted){
+        setState(() {
+          secondAngle = (pi / 30) * now.second;
+          minuteAngle = pi / 30 * now.minute;
+          hourAngle = (pi / 6 * now.hour) + (pi / 45 * minuteAngle);
+        });
+      }
     });
+  }
+
+  @override
+  void dispose() {
+    _unfocusNode.dispose();
+    super.dispose();
   }
 
   @override
