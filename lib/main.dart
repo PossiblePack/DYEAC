@@ -342,10 +342,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 child: ElevatedButton.icon(
                                   onPressed: () => Navigator.of(context).push(
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            SelectMedicineWidget()
-                                            // ChangeTimeToTakeMedicineWidget()
-                                            ),
+                                      builder: (context) =>
+                                        SelectMedicineWidget()
+                                        ),
                                   ),
                                   label: Text(
                                     "เปลี่ยนเวลาหยอดตา",
